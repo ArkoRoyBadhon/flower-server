@@ -78,7 +78,17 @@ const getAllFlowers = async (
   }
 };
 
+const updateFlower = async (
+  id: string,
+  payload: Partial<IFlower>,
+): Promise<Partial<IFlower> | null> => {
+  const result = await Flower.findByIdAndUpdate(id, payload, { new: true });
+
+  return result;
+};
+
 export const flowerService = {
   insertIntoDB,
   getAllFlowers,
+  updateFlower,
 };

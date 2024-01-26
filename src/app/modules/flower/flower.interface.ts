@@ -2,7 +2,7 @@ export type IFlower = {
   // _id?: Types.ObjectId
   name: string;
   img: string;
-  price: string;
+  price: number;
   quantity: number;
   bloom_date: string;
   color: string;
@@ -15,7 +15,7 @@ export type IFlower = {
 export type IOption = {
   searchTerm?: string | undefined;
   name?: string;
-  price?: string;
+  price?: number;
   bloom_date?: string;
   color?: string[];
   size?: string;
