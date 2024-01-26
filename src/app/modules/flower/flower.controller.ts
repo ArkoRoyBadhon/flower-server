@@ -53,8 +53,23 @@ const updateFlower = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteFlower = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  console.log("del", id);
+
+  const result = await flowerService.deleteFlower(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Flower Deleted successfully!",
+    data: result,
+  });
+});
+
 export const flowerController = {
   insertIntoDB,
   getAllFlowers,
   updateFlower,
+  deleteFlower,
 };

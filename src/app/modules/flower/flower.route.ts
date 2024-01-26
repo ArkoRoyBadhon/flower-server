@@ -6,6 +6,7 @@ const router = express.Router();
 router.post("/create", flowerController.insertIntoDB);
 
 router.get("/get-flowers", flowerController.getAllFlowers);
-router.patch("/update-flower", flowerController.updateFlower);
+router.patch("/update-flower/:id", flowerController.updateFlower);
+router.delete("/delete-flower/:id", flowerController.deleteFlower);
 
 export const flowerRoutes = router;

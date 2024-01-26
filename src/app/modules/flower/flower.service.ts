@@ -87,8 +87,19 @@ const updateFlower = async (
   return result;
 };
 
+const deleteFlower = async (id: string) => {
+  try {
+    const result = await Flower.findByIdAndDelete(id);
+
+    return result;
+  } catch (error) {
+    return "Something went wrong";
+  }
+};
+
 export const flowerService = {
   insertIntoDB,
   getAllFlowers,
   updateFlower,
+  deleteFlower,
 };
