@@ -7,6 +7,17 @@ import { paginationFields } from "../../../constant/pagination";
 import { saleFilterOptions } from "./sale.constant";
 import { saleService } from "./sale.service";
 
+const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
+  const result = await saleService.insertIntoDB(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Sale created successfully!",
+    data: result,
+  });
+});
+
 const getAllSales = catchAsync(async (req: Request, res: Response) => {
   console.log("query", req.query);
   console.log("params", req.params);
@@ -28,5 +39,6 @@ const getAllSales = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const saleController = {
+  insertIntoDB,
   getAllSales,
 };

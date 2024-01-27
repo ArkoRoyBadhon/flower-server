@@ -5,6 +5,11 @@ import { ISale, ISaleOption } from "./sale.interface";
 import { Sale } from "./sale.model";
 import { paginationsHelpers } from "../../../helpers/paginationHelpers";
 
+const insertIntoDB = async (data: ISale): Promise<ISale | null> => {
+  const result = await Sale.create(data);
+  return result;
+};
+
 const getAllSales = async (
   filters: Partial<ISaleOption>,
   paginationOptions: {
@@ -48,5 +53,6 @@ const getAllSales = async (
 };
 
 export const saleService = {
+  insertIntoDB,
   getAllSales,
 };
