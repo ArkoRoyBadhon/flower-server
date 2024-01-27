@@ -44,9 +44,9 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
 
   // create access token & refresh token
   const { _id: Id } = isUserExist;
-  // const role = isUserExist?.role || 'user'
+  const role = isUserExist?.role || "user";
   const accessToken = jwtHelpers.createToken(
-    { Id, email },
+    { Id, email, role },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string,
   );

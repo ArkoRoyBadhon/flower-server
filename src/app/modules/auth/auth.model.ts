@@ -22,10 +22,10 @@ const UserSchema = new Schema<IUser, UserModel>(
     //   type: String,
     //   required: true,
     // },
-    // role: {
-    //   type: String,
-    //   required: true,
-    // },
+    role: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
