@@ -2,8 +2,10 @@
   "name": "flower-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
     "start": "ts-node-dev --respawn --transpile-only src/server.ts",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts",
     "lint:fix": "eslint --fix",

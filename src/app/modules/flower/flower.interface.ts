@@ -21,4 +21,6 @@ export type IOption = {
   size?: string;
   fragrance?: string[];
   occation?: string[];
+  minPrice?: number;
+  maxPrice?: number;
 };

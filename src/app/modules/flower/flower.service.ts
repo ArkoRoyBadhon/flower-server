@@ -22,7 +22,7 @@ const getAllFlowers = async (
 ): Promise<IGenericResponse<IFlower[]> | null> => {
   // console.log('aa', )
   const andConditions: string | any[] = [];
-  const { searchTerm, ...filtersData } = filters;
+  const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
   const flowerSearchableFields = ["name", "color", "fragrance", "size"];
 
   const AAAA: any = filtersData.bloom_date && endOfDay(filtersData.bloom_date);
@@ -30,8 +30,6 @@ const getAllFlowers = async (
   if (filtersData.bloom_date) {
     filtersData.bloom_date = new Date(AAAA)?.toISOString().split("T")[0];
   }
-
-  console.log("filter data", filtersData);
 
   try {
     if (searchTerm) {
@@ -55,6 +53,23 @@ const getAllFlowers = async (
     }
     // }
 
+    if (minPrice !== undefined && maxPrice !== undefined) {
+      andConditions.push({
+        price: {
+          $gte: minPrice,
+          $lte: maxPrice,
+        },
+      });
+    } else if (minPrice !== undefined) {
+      andConditions.push({
+        price: { $gte: minPrice },
+      });
+    } else if (maxPrice !== undefined) {
+      andConditions.push({
+        price: { $lte: maxPrice },
+      });
+    }
+
     const { page, limit, skip, sortBy, sortOrder } =
       paginationsHelpers.calculatePagination(paginationOptions);
 
@@ -70,7 +85,7 @@ const getAllFlowers = async (
       .sort(sortConditions)
       .skip(skip)
       .limit(limit);
-    const count = await Flower.find({}).countDocuments();
+    const count = await Flower.find(whereConditions).countDocuments();
 
     return {
       meta: {
@@ -99,6 +114,8 @@ const updateFlower = async (
 };
 
 const deleteFlower = async (id: string) => {
+  console.log("delete", id);
+
   try {
     const result = await Flower.findByIdAndDelete(id);
 

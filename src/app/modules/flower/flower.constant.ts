@@ -6,4 +6,6 @@ export const flowerFilterOptions = [
   "size",
   "fragrance",
   "occation",
+  "minPrice",
+  "maxPrice",
 ];
