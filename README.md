@@ -23,6 +23,7 @@ admin@gmail.com
 - mongoDB
 - MOngooose
 - JWT Authentication
+- error handling (pretier, lint-stage, husky)
 
 ## Tools
 - postman
