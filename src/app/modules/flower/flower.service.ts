@@ -82,7 +82,9 @@ const updateFlower = async (
   id: string,
   payload: Partial<IFlower>,
 ): Promise<Partial<IFlower> | null> => {
-  const result = await Flower.findByIdAndUpdate(id, payload, { new: true });
+  const { flowerData }: any = payload;
+
+  const result = await Flower.findByIdAndUpdate(id, flowerData, { new: true });
 
   return result;
 };

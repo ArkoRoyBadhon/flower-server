@@ -35,7 +35,7 @@ const getAllFlowers = catchAsync(async (req: Request, res: Response) => {
 const updateFlower = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const payload = req.body;
-  console.log("id", id, "data", payload);
+  // console.log("id", id, "data", payload);
 
   const result = await flowerService.updateFlower(id, payload);
 
