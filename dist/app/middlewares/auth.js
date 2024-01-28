@@ -19,8 +19,9 @@ const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const authPermission = (...requiredRoles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const ff = req.cookies;
-            const token = ff.accessToken;
+            // const ff = req.cookies;
+            // const token = ff.accessToken;
+            const token = req.headers.authorization;
             if (!token) {
                 throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "You are not authorized");
             }

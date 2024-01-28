@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import httpStatus from "http-status";
@@ -7,16 +8,29 @@ import cookieParser from "cookie-parser";
 
 const app: Application = express();
 
+// const corsOptions = {
+//   // origin: "https://flower-client.vercel.app",
+//   origin: "http://localhost:5173",
+//   methods: "GET,HEAD,POST,PUT,PATCH,DELETE",
+//   credentials: true,
+// };
+
 const corsOptions = {
-  // origin: "http://localhost:3000",
-  // origin: "http://localhost:5173",
-  origin: "https://flower-client.vercel.app",
-  // origin: '*',
+  origin: (origin: any, callback: any) => {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://flower-client.vercel.app",
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,HEAD,POST,PUT,PATCH,DELETE",
   credentials: true,
 };
-
-app.use(cors(corsOptions));
++app.use(cors(corsOptions));
 
 // parser
 app.use(cookieParser());

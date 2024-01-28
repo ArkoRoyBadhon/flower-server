@@ -10,5 +10,5 @@ exports.flowerFilterOptions = [
     "fragrance",
     "occation",
     "minPrice",
-    "maxPrice"
+    "maxPrice",
 ];

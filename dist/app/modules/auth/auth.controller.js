@@ -24,11 +24,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const auth_service_1 = require("./auth.service");
-const config_1 = __importDefault(require("../../../config"));
+// import config from "../../../config";
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const _a = req.body, { confirmPassword } = _a, userData = __rest(_a, ["confirmPassword"]);
@@ -47,19 +48,20 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
     const loginData = __rest(req.body, []);
     // console.log(loginData)
     const result = yield auth_service_1.UserService.loginUser(loginData);
-    const { refreshToken, accessToken } = result, others = __rest(result, ["refreshToken", "accessToken"]);
-    console.log(result);
-    const cookieOptions = {
-        secure: config_1.default.env === "development",
-        httpOnly: true,
-    };
-    res.cookie("refreshToken", refreshToken, cookieOptions);
-    res.cookie("accessToken", accessToken, cookieOptions);
+    // const { refreshToken, ...others } = result;
+    // const cookieOptions:CookieOptions = {
+    //   secure: false,
+    //   httpOnly: true,
+    //   // domain: "flower-server.vercel.app",
+    //   // domain: "http://localhost:5000",
+    //   // sameSite: "none"
+    // };
+    // res.cookie("refreshToken", refreshToken, cookieOptions);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,
         message: "User logged In successfully !",
-        data: others,
+        data: result,
     });
 }));
 const LogOut = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -77,7 +79,9 @@ const LogOut = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0,
     });
 }));
 const getUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const authorizationHeader = req.cookies.accessToken;
+    // const authorizationHeader = req.cookies.accessToken;
+    const authorizationHeader = req.headers.authorization;
+    console.log("accesstoken", authorizationHeader);
     if (typeof authorizationHeader === "string") {
         const token = authorizationHeader.split(" ")[1] || authorizationHeader;
         const result = yield auth_service_1.UserService.getLoggedUser(token);

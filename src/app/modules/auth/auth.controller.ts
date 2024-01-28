@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { Request, Response } from "express";
 import { UserService } from "./auth.service";
-import config from "../../../config";
+// import config from "../../../config";
 import ApiError from "../../../errors/ApiError";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
@@ -28,23 +29,23 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   // console.log(loginData)
 
   const result = await UserService.loginUser(loginData);
-  const { refreshToken, accessToken, ...others } = result;
+  // const { refreshToken, ...others } = result;
 
-  console.log(result);
+  // const cookieOptions:CookieOptions = {
+  //   secure: false,
+  //   httpOnly: true,
+  //   // domain: "flower-server.vercel.app",
+  //   // domain: "http://localhost:5000",
+  //   // sameSite: "none"
+  // };
 
-  const cookieOptions = {
-    secure: config.env === "development",
-    httpOnly: true,
-  };
-
-  res.cookie("refreshToken", refreshToken, cookieOptions);
-  res.cookie("accessToken", accessToken, cookieOptions);
+  // res.cookie("refreshToken", refreshToken, cookieOptions);
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "User logged In successfully !",
-    data: others,
+    data: result,
   });
 });
 
@@ -66,7 +67,10 @@ const LogOut = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getUser = catchAsync(async (req: Request, res: Response) => {
-  const authorizationHeader = req.cookies.accessToken;
+  // const authorizationHeader = req.cookies.accessToken;
+  const authorizationHeader = req.headers.authorization;
+
+  console.log("accesstoken", authorizationHeader);
 
   if (typeof authorizationHeader === "string") {
     const token = authorizationHeader.split(" ")[1] || authorizationHeader;
