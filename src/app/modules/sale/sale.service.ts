@@ -4,9 +4,22 @@ import { IGenericResponse } from "../../../interfaces/common";
 import { ISale, ISaleOption } from "./sale.interface";
 import { Sale } from "./sale.model";
 import { paginationsHelpers } from "../../../helpers/paginationHelpers";
+import { subDays } from "date-fns";
+import { Flower } from "../flower/flower.model";
 
 const insertIntoDB = async (data: ISale): Promise<ISale | null> => {
-  const result = await Sale.create(data);
+  const { flower_id } = data;
+
+  const flowerData = await Flower.findById(flower_id);
+
+  const flowerName = flowerData?.name || "N/A";
+
+  const info = {
+    ...data,
+    flower_name: flowerName,
+  };
+
+  const result = await Sale.create(info);
   return result;
 };
 
@@ -19,8 +32,7 @@ const getAllSales = async (
     sortOrder?: SortOrder | undefined;
   },
 ): Promise<IGenericResponse<ISale[]> | null> => {
-  // console.log('aa', )
-  const { sell_date } = filters;
+  const { saleHistory } = filters;
 
   try {
     const { page, limit, skip, sortBy, sortOrder } =
@@ -31,7 +43,32 @@ const getAllSales = async (
       sortConditions[sortBy] = sortOrder;
     }
 
-    const result = await Sale.find({ sell_date })
+    const condition: any = {};
+
+    if (saleHistory === "weekly") {
+      condition.sell_date = {
+        $gte: subDays(new Date(), 7),
+        $lte: new Date(),
+      };
+    } else if (saleHistory === "daily") {
+      condition.sell_date = {
+        $gte: subDays(new Date(), 1),
+        $lte: new Date(),
+      };
+    } else if (saleHistory === "monthly") {
+      condition.sell_date = {
+        $gte: subDays(new Date(), 30),
+        $lte: new Date(),
+      };
+    } else if (saleHistory === "yearly") {
+      condition.sell_date = {
+        $gte: subDays(new Date(), 365),
+        $lte: new Date(),
+      };
+    }
+
+    const result = await Sale.find(condition)
+      .populate("flower_id")
       .sort(sortConditions)
       .skip(skip)
       .limit(limit);

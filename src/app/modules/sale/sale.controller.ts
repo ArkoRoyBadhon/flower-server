@@ -19,14 +19,8 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllSales = catchAsync(async (req: Request, res: Response) => {
-  console.log("query", req.query);
-  console.log("params", req.params);
-
   const filters = pick(req.query, saleFilterOptions);
   const paginationOptions = pick(req.query, paginationFields);
-
-  console.log("filters", filters);
-  console.log("pagination", paginationOptions);
 
   const result = await saleService.getAllSales(filters, paginationOptions);
 

@@ -1,1 +1,1 @@
-export const saleFilterOptions = ["sell_date"];
+export const saleFilterOptions = ["saleHistory"];
