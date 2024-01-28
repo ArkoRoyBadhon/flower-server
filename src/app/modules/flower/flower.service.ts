@@ -4,6 +4,7 @@ import { IFlower, IOption } from "./flower.interface";
 import { Flower } from "./flower.model";
 import { IGenericResponse } from "../../../interfaces/common";
 import { paginationsHelpers } from "../../../helpers/paginationHelpers";
+import { endOfDay } from "date-fns";
 
 const insertIntoDB = async (data: IFlower): Promise<IFlower | null> => {
   const result = await Flower.create(data);
@@ -23,6 +24,14 @@ const getAllFlowers = async (
   const andConditions: string | any[] = [];
   const { searchTerm, ...filtersData } = filters;
   const flowerSearchableFields = ["name", "color", "fragrance", "size"];
+
+  const AAAA: any = filtersData.bloom_date && endOfDay(filtersData.bloom_date);
+
+  if (filtersData.bloom_date) {
+    filtersData.bloom_date = new Date(AAAA)?.toISOString().split("T")[0];
+  }
+
+  console.log("filter data", filtersData);
 
   try {
     if (searchTerm) {
